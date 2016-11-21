@@ -13,4 +13,8 @@ Behaviour Tree and Finite State Machinem in Unity
 
 拷贝https://github.com/wuxingogo/WuxingogoExtension/ 的基础WuxingogoExtension插件DLL到工程的Plugins目录下
 
+现在还有一些功能的BUG，欢迎你发起分支一起编写
+
+我的Email:52111314ly@sina.com
+
 ![github](ScreenShot/1.jpg "github") 
