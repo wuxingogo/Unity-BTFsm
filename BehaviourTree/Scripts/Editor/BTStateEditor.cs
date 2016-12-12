@@ -81,7 +81,7 @@ namespace wuxingogo.BTNode
                  Selection.objects = new UnityEngine.Object[] { targetState.Owner };
              } );
            
-            ShowXAttributeMember( target );
+            //ShowXAttributeMember( target );
 
 
             targetState.GlobalEvent.Name = CreateStringField( "GlobalEvent", targetState.GlobalEvent.Name );

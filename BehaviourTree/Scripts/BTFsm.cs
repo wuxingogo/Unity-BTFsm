@@ -36,9 +36,21 @@ namespace wuxingogo.btFsm
             return null;
         }
 
-        public BTVariable FindVar( string varName )
-        {
-            for( int i = 0; i < totalVariable.Count; i++ )
+		public BTVariable FindVar( BTVariable variable )
+		{
+			for( int i = 0; i < totalVariable.Count; i++ )
+			{
+				if( totalVariable[i].Source == variable )
+				{
+					return totalVariable[i];
+				}
+			}
+			return null;
+		}
+		
+		public BTVariable FindVar( string varName )
+		{
+			for( int i = 0; i < totalVariable.Count; i++ )
             {
                 if( totalVariable[i].Name == varName )
                 {
@@ -80,10 +92,16 @@ namespace wuxingogo.btFsm
 
 		void Reset()
 		{
+			totalVariable = new List<BTVariable>();
+			totalEvent = new List<BTEvent>();
+			totalState = new List<BTState>();
+
 			var startEvent = CreateStartEvent();
 			startEvent.TargetState = BTState.Create<BTState>( this );
 			startEvent.TargetState.GlobalEvent = startEvent;
 			startEvent.TargetState.Name = "GlobalState";
+
+
 
 			var type = wuxingogo.Reflection.XReflectionUtils.TryGetClass ("BTGenericMenu");
 			if (type != null) {
@@ -237,6 +255,11 @@ namespace wuxingogo.btFsm
 		public void RemoveState(BTState state)
 		{
 			totalState.Remove(state);
+		}
+
+		public void RemoveGlobalEvent(BTEvent targetEvent)
+		{
+			totalEvent.Remove(targetEvent);
 		}
 
         public void RemoveVar( int index )

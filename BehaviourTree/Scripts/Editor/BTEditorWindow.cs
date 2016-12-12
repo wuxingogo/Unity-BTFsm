@@ -37,8 +37,18 @@ namespace wuxingogo.BTNode
         {
             isHide = true;
             ChangeAllFlag( HideFlags.HideInHierarchy );
-           
+           	
         }
+
+		[MenuItem( "Wuxingogo/BTEditor/ Delete all selected Assets" )]
+		static void DeleteAsset()
+		{
+			var objects = Selection.objects;
+			for (int i = 0; i < objects.Length; i++) {
+				DestroyImmediate(objects[i], true);
+			}
+			
+		}
 
         [MenuItem( "Wuxingogo/BTEditor/ Show All Assets" )]
         static void ShowAsset()
@@ -223,27 +233,42 @@ namespace wuxingogo.BTNode
                     Rect mouseRect = new Rect( AdsorptionNodePosition(), new Vector2( 10, 10 ) );
                     DragNode.DrawBesizeFromRect( currentEventRect, mouseRect );
                 }
+
+				DrawGlobalEvent();
                 base.OnXGUI();
-
-                
-
-
-                DrawGlobalEvent();
-
 
             }
         }
+
+		private void ChangeGlobalEvent(BTState targetState)
+		{
+			currentEvent.TargetState = targetState;
+			if(currentEvent.Name == target.startEvent.Name)
+			{
+				target.startEvent.TargetState = targetState;
+				target.template.UpdateGlobalEvent(currentEvent, targetState);
+
+			}
+		}
 
         public override void OnNoneSelectedNode()
         {
             if( target != null )
                 Selection.objects = new Object[] { target.gameObject };
-            if( currentEvent != null )
+            if( currentEvent != null && currentEvent.Name != target.startEvent.Name )
             {
-                currentEvent.TargetState = null;
-                currentEvent = null;
-                currentEventRect = new Rect( 0, 0, 0, 0 );
-            }
+				if(currentEvent.isGlobal){
+					currentEvent.TargetState = null;
+					currentEvent = null;
+					currentEventRect = new Rect( 0, 0, 0, 0 );
+				}else{
+	                currentEvent.TargetState = null;
+	                currentEvent = null;
+	                currentEventRect = new Rect( 0, 0, 0, 0 );
+				}
+            }else{
+				currentEvent = null;
+			}
         }
 
         public override BTFsm targetNode
@@ -333,7 +358,7 @@ namespace wuxingogo.BTNode
             if( currentEvent != null )
             {
                 var currentNode = node as BTNode;
-                currentEvent.TargetState = currentNode.BtState;
+				ChangeGlobalEvent(currentNode.BtState);
                 currentEvent = null;
                 Dirty();
             }
@@ -370,24 +395,29 @@ namespace wuxingogo.BTNode
                 for( int j = 0; j < totalNode.Count; j++ )
                 {
                     var targetState = totalNode[j].BtState;
-                    if( targetEvent.TargetState.Name == targetState.Name )
+					if( targetEvent.TargetState != null && targetEvent.TargetState.Name == targetState.Name )
                     {
-                        DrawEvent( i, j );
+						bool globalEvent = targetEvent == currentEvent;
+						DrawEvent( i,globalEvent, j );
                         break;
                     }
                 }
             }
         }
-
-        protected void DrawEvent( int eventIndex, int stateIndex )
+		private BTEvent currGlobalEvent = null;
+        protected void DrawEvent( int eventIndex, bool isGlobalEvent, int stateIndex )
         {
             var targetEvent = target.totalEvent[eventIndex];
             var targetState = totalNode[stateIndex];
 
-            var bounds = new Rect( targetState.DrawBounds.position + new Vector2( 0, -100 ), new Vector2( 100, 50 ) );
-            GUI.Box( bounds, target.totalEvent[eventIndex].Name, XStyles.GetInstance().window );
-            var arrow = new Rect( targetState.DrawBounds.position + new Vector2( 50, -50 ), new Vector2( 10, 50 ) );
-            GUI.Box( arrow, "", XStyles.GetInstance().window );
+            var bounds = new Rect( targetState.DrawBounds.position + new Vector2( 0, -60 ), new Vector2( 100, 35 ) );
+			if(GUI.Button( bounds, target.totalEvent[eventIndex].Name, XStyles.GetInstance().button )){
+				currentEvent = target.totalEvent[eventIndex];
+			}
+			if(isGlobalEvent)
+				BTEditorWindow.instance.SetCurrentRect( bounds );
+            var arrow = new Rect( targetState.DrawBounds.position + new Vector2( 50, -15 ), new Vector2( 10, 30 ) );
+			GUI.Box( arrow, "" );
 
         }
 

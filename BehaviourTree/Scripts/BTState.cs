@@ -34,6 +34,7 @@ namespace wuxingogo.btFsm
             var newState = XScriptableObject.CreateInstance<T>();
             newState.Owner = parentFsm;
             parentFsm.AddNewState( newState );
+			newState.OnCreate();
             return newState;
 
 		}
@@ -43,6 +44,7 @@ namespace wuxingogo.btFsm
             var newState = XScriptableObject.CreateInstance( type ) as BTState;
             newState.Owner = parentFsm;
             parentFsm.AddNewState( newState );
+			newState.OnCreate();
             return newState;
         }
 
@@ -61,7 +63,7 @@ namespace wuxingogo.btFsm
             }
 
             newState.FindEvent( newState.GlobalEvent );
-            
+			newState.OnCreate();
             return newState;
         }
 

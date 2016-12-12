@@ -208,7 +208,7 @@ namespace wuxingogo.BTNode
 
         public static BTAction CreateAction( Type type, BTState parentState )
         {
-            BTAction action = XScriptableObject.CreateInstance( type ) as BTAction;
+			BTAction action = XScriptableObject.CreateInstance( type ) as BTAction;
             action.Name = type.Name;
             action.Owner = parentState;
             parentState.totalActions.Add( action );
@@ -238,8 +238,8 @@ namespace wuxingogo.BTNode
                     owner.template.startEvent = owner.startEvent;
                     owner.template.totalEvent = owner.totalEvent;
                 }
-                if( owner.template.totalState == null )
-                    owner.template.totalState = new List<BTState>();
+				if( owner.template.totalVariable == null )
+					owner.template.totalVariable = new List<BTVariable>();
                 owner.template.totalVariable.Add( variable );
                 BTEditorWindow.AddObjectToAsset( variable, owner.template );
                 EditorUtility.SetDirty( owner );
@@ -255,20 +255,12 @@ namespace wuxingogo.BTNode
             }
         }
 
-        public static void AddActionToState( BTState Owner, BTAction action )
+		public static void AddActionToState( BTState Owner, BTAction action )
         {
-			BTFsm owner = Owner.Owner;
-			if( BTEditorWindow.HasPrefab( owner ) ){
-				if( Owner.Owner.template == null )
-				{
-					BTEditorWindow.AddObjectToAsset( action, Owner );
-					EditorUtility.SetDirty( Owner );
-				}
-			}  
-            else
-            {
-                EditorUtility.SetDirty( Owner );
-            }
+			var Fsm = Owner.Owner;
+			BTEditorWindow.AddObjectToAsset (action, Owner);
+			EditorUtility.SetDirty( Fsm );
+
         }
         #endregion
 

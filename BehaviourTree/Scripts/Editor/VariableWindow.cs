@@ -2,7 +2,6 @@
 using wuxingogo.btFsm;
 using wuxingogo.Editor;
 using UnityEditor;
-using System.Collections.Generic;
 
 namespace wuxingogo.BTNode
 {
@@ -35,8 +34,7 @@ namespace wuxingogo.BTNode
                      deleteIndex = i;
                  } );
                 EndHorizontal();
-				List<object> c = new List<object>();
-				fsm.totalVariable[i].variableValue = GetTypeGUI( fsm.totalVariable[i].variableValue, fsm.totalVariable[i].variableType,c );
+                fsm.totalVariable[i].variableValue = GetTypeGUI( fsm.totalVariable[i].variableValue, fsm.totalVariable[i].variableType, null );
                 EditorUtility.SetDirty( fsm.totalVariable[i] );
                 
             }

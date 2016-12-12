@@ -77,5 +77,18 @@ namespace wuxingogo.btFsm
             targetFsm.startEvent = targetFsm.FindGlobalEvent( targetFsm.startEvent.Name );
             return targetFsm;
 		}
+
+		public void UpdateGlobalEvent (BTEvent currentEvent, BTState btState)
+		{
+			for (int i = 0; i < totalEvent.Count; i++) {
+				if(totalEvent[i].Name == currentEvent.Name){
+					totalEvent[i].TargetState = btState;
+				}
+			}
+			if(currentEvent.Name == startEvent.Name)
+			{
+				startEvent.TargetState = btState;
+			}
+		}
 	}
 }
