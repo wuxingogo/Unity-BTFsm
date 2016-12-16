@@ -5,6 +5,7 @@ using UnityEditor;
 using wuxingogo.btFsm;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Graphs;
 
 namespace wuxingogo.BTNode
 {
@@ -23,7 +24,8 @@ namespace wuxingogo.BTNode
         //    }
         //    return t;
         //}
-
+		public Slot inputSlot = null;
+		public List<Slot> outSlot = new List<Slot>();
         public BTNode( BTState btState )
         {
             this.BtState = btState;
@@ -31,7 +33,24 @@ namespace wuxingogo.BTNode
             {
                 isCustomState = true;
             }
+			inputSlot = AddInputSlot(btState.Name);
+			for (int i = 0; i < btState.totalEvent.Count; i++) {
+				outSlot.Add(AddOutputSlot(btState.totalEvent[i].Name));
+			}
         }
+
+		public void FindSlot ()
+		{
+			for (int i = 0; i < BtState.totalEvent.Count; i++) {
+				var e = BtState.totalEvent[i];
+				if(e.TargetState != null)
+				{
+					var targetNode = BTEditorWindow.instance.FindBTNode(e.TargetState);
+					BTEditorWindow.instance.ConnectSlot(outSlot[i], targetNode.inputSlot);
+
+				}
+			}
+		}
 
         #region implemented abstract members of DragNode
 
@@ -153,59 +172,70 @@ namespace wuxingogo.BTNode
         {
             BTEditorWindow.OpenTypeScript( BtState.GetType() );
         }
+		public override void Draw ()
+		{
+ 
+		}
 
-        public override void Draw()
-        {
+//		public override void NodeUI(GraphGUI host)
+//        {
+//			//XBaseWindow.DoButton("123", ()=> {});
+//			var boxStyle = isCustomState ? XStyles.GetInstance().FindStyle( "RedBox" ) : XStyles.GetInstance().FindStyle( "GreyBox" );
+//			foreach (var slot in outputSlots) {
+//				host.LayoutSlot(slot, slot.title, true, false, true, XGraphGUI._pinIn);
+//			}
+
+			//GUI.Box(GUILayoutUtility.GetRect(new GUIContent(Title),boxStyle), Title);
+			//GUI.Box(this.position, "", boxStyle);
+//            GUI.Box( DrawBounds, "", 
+//                isCustomState ? XStyles.GetInstance().FindStyle( "RedBox" ) : XStyles.GetInstance().FindStyle( "GreyBox" ) );
+            //DrawChildNodes();
+//
+//            if( Selected )
+//            {
+//                GUI.Box( DrawBounds, "",
+//                    isCustomState ? XStyles.GetInstance().FindStyle( "GreenBox" ) : XStyles.GetInstance().FindStyle( "BlueBox" ) );
+//            }
+//            if( BtState.Owner.currState != null && BtState.Name == BtState.Owner.currState.Name )
+//            {
+//                GUI.Box( DrawBounds, "", XStyles.GetInstance().FindStyle( "OrangleBox" ) );
+//            }
+//
+//                for( int i = 0; i < BtState.totalEvent.Count; i++ )
+//                {
+//                    Rect button = GetEventRect( i );
+//                    var targetEvent = BtState.totalEvent[i];
+//                    bool isCurrentEvent = targetEvent == BTEditorWindow.instance.currentEvent;
+//                    if( GUI.Button( button, targetEvent.Name, XStyles.GetInstance().button ) )
+//                    {
+//                        BTEditorWindow.instance.SetCurrentEvent( targetEvent );
+//                    }
+//                    
+//                    if( isCurrentEvent )
+//                    {
+//                        BTEditorWindow.instance.SetCurrentRect( button );
+//                    }
+//                    BTNode targetStateNode = null;
+//                    if( targetEvent.TargetState != null )
+//                    {
+//                        targetStateNode = BTEditorWindow.instance.FindBTNode( targetEvent.TargetState );
+//                        DrawBesizeFromRect( button, targetStateNode.DrawBounds );
+//                    }
+//
+//                    if( totalRunningEvent.ContainsKey( targetEvent ) )
+//                    {
+//                        
+//                        DrawLine( i, targetStateNode.DrawBounds );
+//                    }
+//
+//                }
+//                GUI.Box( DrawBounds, ThumbnailTexture, XStyles.GetInstance().FindStyle( "TextureBox" ) );
+			//GUI.Label( GUILayoutUtility.GetRect(new GUIContent(Title), boxStyle), Title, XStyles.GetInstance().label );
+                
+//        }
             
-            
-            GUI.Box( DrawBounds, "", 
-                isCustomState ? XStyles.GetInstance().FindStyle( "RedBox" ) : XStyles.GetInstance().FindStyle( "GreyBox" ) );
-            DrawChildNodes();
-
-            if( Selected )
-            {
-                GUI.Box( DrawBounds, "",
-                    isCustomState ? XStyles.GetInstance().FindStyle( "GreenBox" ) : XStyles.GetInstance().FindStyle( "BlueBox" ) );
-            }
-            if( BtState.Owner.currState != null && BtState.Name == BtState.Owner.currState.Name )
-            {
-                GUI.Box( DrawBounds, "", XStyles.GetInstance().FindStyle( "OrangleBox" ) );
-            }
-
-                for( int i = 0; i < BtState.totalEvent.Count; i++ )
-                {
-                    Rect button = GetEventRect( i );
-                    var targetEvent = BtState.totalEvent[i];
-                    bool isCurrentEvent = targetEvent == BTEditorWindow.instance.currentEvent;
-                    if( GUI.Button( button, targetEvent.Name, XStyles.GetInstance().button ) )
-                    {
-                        BTEditorWindow.instance.SetCurrentEvent( targetEvent );
-                    }
-                    
-                    if( isCurrentEvent )
-                    {
-                        BTEditorWindow.instance.SetCurrentRect( button );
-                    }
-                    BTNode targetStateNode = null;
-                    if( targetEvent.TargetState != null )
-                    {
-                        targetStateNode = BTEditorWindow.instance.FindBTNode( targetEvent.TargetState );
-                        DrawBesizeFromRect( button, targetStateNode.DrawBounds );
-                    }
-
-                    if( totalRunningEvent.ContainsKey( targetEvent ) )
-                    {
-                        
-                        DrawLine( i, targetStateNode.DrawBounds );
-                    }
-
-                }
-                GUI.Box( DrawBounds, ThumbnailTexture, XStyles.GetInstance().FindStyle( "TextureBox" ) );
-                GUI.Label( DrawBounds, Title, XStyles.GetInstance().label );
-            }
-            
-        }
+	}
 
         #endregion
-  }
+}
 

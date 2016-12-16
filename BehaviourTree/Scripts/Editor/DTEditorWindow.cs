@@ -5,6 +5,7 @@ using UnityEditor;
 using wuxingogo.btFsm;
 using UnityEditor.Graphs;
 using wuxingogo.Runtime;
+using wuxingogo.BTNode;
 
 namespace wuxingogo.Node
 {
@@ -17,7 +18,7 @@ namespace wuxingogo.Node
 		KeyBoardState keyboardState = null;
 		GraphCamera graphCamera = null;
         public Graph stateMachineGraph = null;
-        public GraphGUI stateMachineGraphGUI = null;
+        public XGraphGUI stateMachineGraphGUI = null;
         public Vector2 mousePosition
         {
             get
@@ -70,29 +71,29 @@ namespace wuxingogo.Node
 			graphCamera.HandleInput( e );
 
 			HandleSelect( e );
-			HandleDrag( e );
+			//HandleDrag( e );
 			HandleDragPerform( e );
 
-			var allNodes = DragNodes();
-			for( int i = 0; i < allNodes.Length; i++ ) {
-                allNodes[i].DrawPosition = WorldToScreen( allNodes[i].Position );
-				allNodes[i].Draw();
-			}
+			//var allNodes = DragNodes();
+			//for( int i = 0; i < allNodes.Length; i++ ) {
+   //             allNodes[i].DrawPosition = WorldToScreen( allNodes[i].Position );
+			//	allNodes[i].Draw();
+			//}
 
 			bool inputProcessed = false;
-			foreach( var node in allNodes ) {
-				if( node == null )
-					continue;
-				inputProcessed = HandleNodeInput( node, e, graphCamera );
-				if( inputProcessed ) {
-					break;
-				}
-			}
+			//foreach( var node in allNodes ) {
+			//	if( node == null )
+			//		continue;
+			//	inputProcessed = HandleNodeInput( node, e, graphCamera );
+			//	if( inputProcessed ) {
+			//		break;
+			//	}
+			//}
 
-			if( !inputProcessed ) {
-				selectionBox.HandleInput( e );
-				HandleEvent( e );
-			}
+			//if( !inputProcessed ) {
+			//	selectionBox.HandleInput( e );
+			//	HandleEvent( e );
+			//}
 
 			selectionBox.Draw();
 
@@ -132,7 +133,7 @@ namespace wuxingogo.Node
             if( stateMachineGraphGUI != null )
             {
                 stateMachineGraphGUI.BeginGraphGUI( this, new Rect( 0, 0, this.position.width, this.position.height ) );
-                //stateMachineGraphGUI.OnGraphGUI ();
+                stateMachineGraphGUI.OnGraphGUI ();
                 stateMachineGraphGUI.EndGraphGUI();
 
             }
@@ -154,9 +155,10 @@ namespace wuxingogo.Node
 			node.OnSelected();
 		}
 
-        GraphGUI GetEditor( Graph graph )
+        XGraphGUI GetEditor( Graph graph )
         {
-            GraphGUI graphGUI = CreateInstance( "GraphGUI" ) as GraphGUI;
+            XGraphGUI graphGUI = CreateInstance<XGraphGUI>();
+            graphGUI.Init();
             graphGUI.graph = graph;
             graphGUI.hideFlags = HideFlags.HideAndDontSave;
             return graphGUI;
