@@ -257,11 +257,6 @@ namespace wuxingogo.btFsm
 			totalState.Remove(state);
 		}
 
-		public void RemoveGlobalEvent(BTEvent targetEvent)
-		{
-			totalEvent.Remove(targetEvent);
-		}
-
         public void RemoveVar( int index )
         {
             totalVariable.RemoveAt( index );

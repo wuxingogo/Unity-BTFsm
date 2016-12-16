@@ -53,14 +53,14 @@ namespace wuxingogo.Node
 			}
 		}
 
-//		Vector2 position = Vector2.zero;
+		Vector2 position = Vector2.zero;
         [X]
         public Vector2 Position {
 			get {
-				return position.center;
+				return position;
 			}
 			set {
-				position.center = value;
+				position = value;
 
 			}
 		}

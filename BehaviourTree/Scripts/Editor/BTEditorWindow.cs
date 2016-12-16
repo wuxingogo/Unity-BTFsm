@@ -6,9 +6,6 @@ using wuxingogo.Editor;
 using System.Collections.Generic;
 using wuxingogo.Runtime;
 using wuxingogo.btFsm;
-using UnityEditor.Graphs;
-
-
 namespace wuxingogo.BTNode
 {
 
@@ -173,28 +170,12 @@ namespace wuxingogo.BTNode
             {
                 AddNewBTNode( target.totalState[i] );
             }
-
-			ConnectAllSlot();
-
             target.OnFireEvent = OnFireEvent;
             return totalNode.ToArray();
 
         }
-		public void ConnectAllSlot()
-		{
-			int count = totalNode.Count;
-			for( int i = 0; i < count; i++ )
-			{
-				var state = totalNode[i];
-				state.FindSlot();
-			}
-		}
-		public void ConnectSlot(Slot lhs,  Slot rhs)
-		{
-			stateMachineGraph.Connect(lhs, rhs);
-		}
-		
-		public BTNode FindBTNode( BTState currNode )
+
+        public BTNode FindBTNode( BTState currNode )
         {
             for( int i = 0; i < totalNode.Count; i++ )
             {
@@ -211,8 +192,6 @@ namespace wuxingogo.BTNode
             var newNode = new BTNode( newBTState );
             
             totalNode.Add( newNode );
-            stateMachineGraph.AddNode( newNode );
-			newNode.position = newBTState.Bounds;
             return newNode;
 
         }
@@ -236,60 +215,45 @@ namespace wuxingogo.BTNode
             }
             if( target != null )
             {
-//                BeginWindows();
-//                Event e = Event.current;
-//                variableWindow.Draw( target );
-//                if( variableWindow.isPointInContainer( e.mousePosition ) )
-//                {
-//                    e = null;
-//                }
-//
-//
-//                EndWindows();
-				DragNodes();
-//                EditorGUI.LabelField( new Rect( position.width / 2 - 50, 200, 100, 100 ), new GUIContent( target.Name ));
-//
-//                if( currentEvent != null )
-//                {
-//                    Rect mouseRect = new Rect( AdsorptionNodePosition(), new Vector2( 10, 10 ) );
-//                    DragNode.DrawBesizeFromRect( currentEventRect, mouseRect );
-//                }
-//
-//				DrawGlobalEvent();
-//                base.OnXGUI();
+                BeginWindows();
+                Event e = Event.current;
+                variableWindow.Draw( target );
+                if( variableWindow.isPointInContainer( e.mousePosition ) )
+                {
+                    e = null;
+                }
+
+
+                EndWindows();
+
+                EditorGUI.LabelField( new Rect( position.width / 2 - 50, 200, 100, 100 ), new GUIContent( target.Name ));
+
+                if( currentEvent != null )
+                {
+                    Rect mouseRect = new Rect( AdsorptionNodePosition(), new Vector2( 10, 10 ) );
+                    DragNode.DrawBesizeFromRect( currentEventRect, mouseRect );
+                }
+                base.OnXGUI();
+
+                
+
+
+                DrawGlobalEvent();
+
 
             }
         }
-
-		private void ChangeGlobalEvent(BTState targetState)
-		{
-			currentEvent.TargetState = targetState;
-			if(currentEvent.Name == target.startEvent.Name)
-			{
-				target.startEvent.TargetState = targetState;
-				target.template.UpdateGlobalEvent(currentEvent, targetState);
-
-			}
-		}
 
         public override void OnNoneSelectedNode()
         {
             if( target != null )
                 Selection.objects = new Object[] { target.gameObject };
-            if( currentEvent != null && currentEvent.Name != target.startEvent.Name )
+            if( currentEvent != null )
             {
-				if(currentEvent.isGlobal){
-					currentEvent.TargetState = null;
-					currentEvent = null;
-					currentEventRect = new Rect( 0, 0, 0, 0 );
-				}else{
-	                currentEvent.TargetState = null;
-	                currentEvent = null;
-	                currentEventRect = new Rect( 0, 0, 0, 0 );
-				}
-            }else{
-				currentEvent = null;
-			}
+                currentEvent.TargetState = null;
+                currentEvent = null;
+                currentEventRect = new Rect( 0, 0, 0, 0 );
+            }
         }
 
         public override BTFsm targetNode
@@ -379,7 +343,7 @@ namespace wuxingogo.BTNode
             if( currentEvent != null )
             {
                 var currentNode = node as BTNode;
-				ChangeGlobalEvent(currentNode.BtState);
+                currentEvent.TargetState = currentNode.BtState;
                 currentEvent = null;
                 Dirty();
             }
@@ -396,6 +360,18 @@ namespace wuxingogo.BTNode
             EditorUtility.SetDirty( target );
         }
 
+        private void DrawEvent()
+        {
+            for( int i = 0; i < target.totalState.Count; i++ )
+            {
+                var totalEvent = target.totalState[i].totalEvent;
+                for( int j = 0; j < totalEvent.Count; j++ )
+                {
+                    var targetEvent = totalEvent[j];
+                }
+            }
+        }
+
         private void DrawGlobalEvent()
         {
             for( int i = 0; i < target.totalEvent.Count; i++ )
@@ -404,31 +380,24 @@ namespace wuxingogo.BTNode
                 for( int j = 0; j < totalNode.Count; j++ )
                 {
                     var targetState = totalNode[j].BtState;
-					if( targetEvent.TargetState != null && targetEvent.TargetState.Name == targetState.Name )
+                    if( targetEvent.TargetState.Name == targetState.Name )
                     {
-						bool globalEvent = targetEvent == currentEvent;
-						DrawEvent( i,globalEvent, j );
+                        DrawEvent( i, j );
                         break;
                     }
                 }
             }
         }
-		private BTEvent currGlobalEvent = null;
-        protected void DrawEvent( int eventIndex, bool isGlobalEvent, int stateIndex )
+
+        protected void DrawEvent( int eventIndex, int stateIndex )
         {
             var targetEvent = target.totalEvent[eventIndex];
             var targetState = totalNode[stateIndex];
 
-            var bounds = new Rect( targetState.DrawBounds.position + new Vector2( 0, -30 ), new Vector2( 100, 35 ) );
-
-			if(isGlobalEvent)
-				BTEditorWindow.instance.SetCurrentRect( bounds );
-            var arrow = new Rect( targetState.DrawBounds.position + new Vector2( 50, -15 ), new Vector2( 0, 35 ) );
-			GUI.Box( arrow, "" );
-
-			if(GUI.Button( bounds, target.totalEvent[eventIndex].Name, XStyles.GetInstance().button )){
-				currentEvent = target.totalEvent[eventIndex];
-			}
+            var bounds = new Rect( targetState.DrawBounds.position + new Vector2( 0, -100 ), new Vector2( 100, 50 ) );
+            GUI.Box( bounds, target.totalEvent[eventIndex].Name, XStyles.GetInstance().window );
+            var arrow = new Rect( targetState.DrawBounds.position + new Vector2( 50, -50 ), new Vector2( 10, 50 ) );
+            GUI.Box( arrow, "", XStyles.GetInstance().window );
 
         }
 
