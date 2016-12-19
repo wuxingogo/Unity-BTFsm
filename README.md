@@ -3,11 +3,9 @@ Behaviour Tree and Finite State Machine in Unity
 
 基于Unity ScriptableObject的状态机和行为树。
 
-你可以自由扩展State和Action,方便扩展。
+完整的FullSource可以让您任意的扩展State和Action
 
 定义每一个状态的优先级，实现复杂的行为树。
-
-完整的FullSource可以让您任意的扩展。
 
 将状态（State）和行为(Action)完整的保存在一个Prefab或者一个template文件里，很方便的加载。
 
