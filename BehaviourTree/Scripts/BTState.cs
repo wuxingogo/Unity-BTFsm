@@ -57,7 +57,7 @@ namespace wuxingogo.btFsm
             newState.totalActions.Clear();
             for( int i = 0; i < source.totalActions.Count; i++ )
             {
-                var newAction = BTAction.CreateAction( source.totalActions[i], newState );
+                BTAction.CreateAction( source.totalActions[i], newState );
             }
 
             newState.FindEvent( newState.GlobalEvent );

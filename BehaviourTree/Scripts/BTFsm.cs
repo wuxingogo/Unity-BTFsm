@@ -24,6 +24,18 @@ namespace wuxingogo.btFsm
 
         public System.Action<BTState, BTEvent> OnFireEvent = null;
 
+		public static List<BTFsm> totalBTFsm = new List<BTFsm>();
+
+		public static BTFsm FindFsmByName(string name)
+		{
+			for( int i = 0; i < totalBTFsm.Count; i++ ) {
+				if( totalBTFsm[i].Name == name ) {
+					return totalBTFsm[i];
+				}
+			}
+			return null;
+		}
+
         public T FindVar<T>(string varName)where T : BTVariable
         {
             for( int i = 0; i < totalVariable.Count; i++ )
@@ -183,11 +195,13 @@ namespace wuxingogo.btFsm
 
 		void OnEnable()
 		{
+			totalBTFsm.Add( this );
             //currState.OnEnter ();
         }
 
         void OnDisable()
 		{
+			totalBTFsm.Remove( this );
             //currState.OnExit ();
         }
 
@@ -323,6 +337,7 @@ namespace wuxingogo.btFsm
             return null;
         }
 
+		
         void OnDrawGizmos()
         {
             Gizmos.DrawIcon( this.transform.position, "XLogo.jpg" );

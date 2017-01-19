@@ -34,7 +34,7 @@ namespace wuxingogo.BTNode
                      deleteIndex = i;
                  } );
                 EndHorizontal();
-                fsm.totalVariable[i].variableValue = GetTypeGUI( fsm.totalVariable[i].variableValue, fsm.totalVariable[i].variableType, null );
+				fsm.totalVariable[i].variableValue = GetTypeGUI( fsm.totalVariable[i].variableValue, fsm.totalVariable[i].variableType, fsm.totalVariable[i].variableType.Name, null );
                 EditorUtility.SetDirty( fsm.totalVariable[i] );
                 
             }

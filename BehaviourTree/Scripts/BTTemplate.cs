@@ -35,6 +35,15 @@ namespace wuxingogo.btFsm
 			{
                 BTState.Create( targetFsm, source.totalState[i]);
 			}
+			for( int i = 0; i < source.totalState.Count; i++ )
+			{
+				var state = targetFsm.totalState[i];
+				for( int j = 0; j < state.totalEvent.Count; j++ )
+				{
+					if( state.totalEvent[j].TargetState != null )
+						state.totalEvent[j].TargetState = targetFsm.FindState( state.totalEvent[j].TargetState.Name );
+				}
+			}
 
             for( int i = 0; i < source.totalVariable.Count; i++ )
             {

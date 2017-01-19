@@ -18,14 +18,15 @@ namespace wuxingogo.Node
 		GraphCamera graphCamera = null;
         public Graph stateMachineGraph = null;
         public GraphGUI stateMachineGraphGUI = null;
+		private Vector2 _mousePosition = Vector2.zero;
         public Vector2 mousePosition
         {
             get
             {
                 Event e = Event.current;
 				if(e != null)
-                	return e.mousePosition;
-				return position.center;
+					_mousePosition = e.mousePosition;
+				return _mousePosition;
             }
         }
 
