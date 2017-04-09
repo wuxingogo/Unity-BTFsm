@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEditor;
 using wuxingogo.tools;
 using wuxingogo.btFsm;
+using wuxingogo.Editor;
 
 internal class Source2DLL : XBaseEditor {
 

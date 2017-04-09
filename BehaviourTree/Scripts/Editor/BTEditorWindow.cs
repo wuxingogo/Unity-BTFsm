@@ -395,9 +395,9 @@ namespace wuxingogo.BTNode
             var targetState = totalNode[stateIndex];
 
             var bounds = new Rect( targetState.DrawBounds.position + new Vector2( 0, -100 ), new Vector2( 100, 50 ) );
-            GUI.Box( bounds, target.totalEvent[eventIndex].Name, XStyles.GetInstance().window );
+			GUI.Box( bounds, target.totalEvent[eventIndex].Name, XStyles.GetInstance().skin.window );
             var arrow = new Rect( targetState.DrawBounds.position + new Vector2( 50, -50 ), new Vector2( 10, 50 ) );
-            GUI.Box( arrow, "", XStyles.GetInstance().window );
+			GUI.Box( arrow, "", XStyles.GetInstance().skin.window );
 
         }
 

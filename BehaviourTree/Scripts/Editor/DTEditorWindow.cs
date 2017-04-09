@@ -271,6 +271,17 @@ namespace wuxingogo.Node
 					}
 				}
 			}
+
+		
+			DragNode hoverNode = HoverNode;
+			if (hoverNode != null) {
+				var mouseNode = (hoverNode as BTNode.BTNode);
+				var commen = mouseNode.BtState.Notes;
+				if (!string.IsNullOrEmpty (commen)) {
+					var pos = mousePosition;
+					EditorGUI.LabelField (new Rect (pos, new Vector2 (100, 30)), commen);
+				}
+			}
 		}
 
 
@@ -365,8 +376,10 @@ namespace wuxingogo.Node
 			bool selectedStateChanged = false;
 			foreach( var node in DragNodes() ) {
 				// node bounds in world space
-
-				var selected = node.Bounds.Overlaps( boundsScreenSpace );
+				var bounds = node.Bounds;
+				// offset
+				bounds.position += node.DrawPosition;
+				var selected = bounds.Overlaps( boundsScreenSpace );
 				if( multiSelect ) {
 					if( selected ) {
 						selectedStateChanged |= SetSelectedState( node, selected );

@@ -121,7 +121,7 @@ namespace wuxingogo.BTNode
                 var nextPointIndex = currPointIndex+1;
                 var forwardColor = Handles.color;
                 float percent = totalRunningEvent[currEvent] * 1.0f / 40;
-                using( new HandleColor( Color.Lerp( Color.red, Color.green, percent ) ) )
+				using( new HandleColorScope( Color.Lerp( Color.red, Color.green, percent ) ) )
                 {
                     Handles.DrawAAPolyLine( 10, allPoint[currPointIndex], allPoint[nextPointIndex] );
                 }
@@ -177,7 +177,7 @@ namespace wuxingogo.BTNode
                     Rect button = GetEventRect( i );
                     var targetEvent = BtState.totalEvent[i];
                     bool isCurrentEvent = targetEvent == BTEditorWindow.instance.currentEvent;
-                    if( GUI.Button( button, targetEvent.Name, XStyles.GetInstance().button ) )
+					if( GUI.Button( button, targetEvent.Name, XStyles.GetInstance().skin.button ) )
                     {
                         BTEditorWindow.instance.SetCurrentEvent( targetEvent );
                     }
@@ -201,7 +201,7 @@ namespace wuxingogo.BTNode
 
                 }
                 GUI.Box( DrawBounds, ThumbnailTexture, XStyles.GetInstance().FindStyle( "TextureBox" ) );
-                GUI.Label( DrawBounds, Title, XStyles.GetInstance().label );
+				GUI.Label( DrawBounds, Title, XStyles.GetInstance().skin.label );
             }
             
         }
