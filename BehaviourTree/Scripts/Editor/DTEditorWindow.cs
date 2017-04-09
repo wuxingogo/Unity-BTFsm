@@ -34,7 +34,7 @@ namespace wuxingogo.Node
         {
             if( HoverNode != null )
             {
-                return HoverNode.Bounds.center;
+				return HoverNode.Bounds.center + HoverNode.DrawPosition;
             }
             return mousePosition;
         }
@@ -225,6 +225,13 @@ namespace wuxingogo.Node
 		void HandleDrag(Event e)
 		{
 			int dragButton = 0;
+			int rightButton = 2;
+			if( e.button == rightButton && e.type == EventType.layout ) {
+				foreach( var node in DragNodes() ) {
+					node.MoveNode( e.delta );
+				}
+			}
+
 			if( draggingNodes ) {
 				if( e.type == EventType.MouseUp && e.button == dragButton ) {
 					draggingNodes = false;
@@ -232,7 +239,6 @@ namespace wuxingogo.Node
 					// Drag all the selected nodes
 					foreach( var node in DragNodes() ) {
 						if( node.Selected ) {
-//                            Undo.RecordObject(node, "Move Node");
 							node.MoveNode( e.delta );
 						}
 					}
@@ -245,29 +251,7 @@ namespace wuxingogo.Node
 					DragNode mouseOverNode = HoverNode;
 
 					if( mouseOverNode != null && mouseOverNode.Selected ) {
-					// Make sure we are not over a pin
-					//                        var pins = new List<GraphPin>();
-					//                        pins.AddRange(mouseOverNode.InputPins);
-					//                        pins.AddRange(mouseOverNode.OutputPins);
-					//                        bool isOverPin = false;
-					//                        GraphPin overlappingPin = null;
-					//                        foreach (var pin in pins)
-					//                        {
-					//                            if (pin.ContainsPoint(mousePositionWorld))
-					//                            {
-					//                                isOverPin = true;
-					//                                overlappingPin = pin;
-					//                                break;
-					//                            }
-					//                        }
-					//                        if (!isOverPin)
-					//                        {
 						draggingNodes = true;
-					//                        }
-					//                        else
-					//                        {
-					//                            HandleDragPin(overlappingPin);
-					//                        }
 					}
 				}
 			}
@@ -330,19 +314,6 @@ namespace wuxingogo.Node
 		public static bool HandleNodeInput(DragNode node, Event e, GraphCamera camera)
 		{
 			bool inputProcessed = false;
-			if( !node.IsDragging ) {
-				// let the pins handle the input first
-//                foreach (var pin in node.InputPins)
-//                {
-//                    if (inputProcessed) break;
-//                    inputProcessed |= HandlePinInput(pin, e, camera);
-//                }
-//                foreach (var pin in node.OutputPins)
-//                {
-//                    if (inputProcessed) break;
-//                    inputProcessed |= HandlePinInput(pin, e, camera);
-//                }
-			}
 
 			var mousePosition = e.mousePosition;
 			var mousePositionWorld = camera.ScreenToWorld( mousePosition );

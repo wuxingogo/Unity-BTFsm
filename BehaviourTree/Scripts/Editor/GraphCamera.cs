@@ -82,7 +82,8 @@ namespace wuxingogo.Node
                 }
                 else
                 {
-                    Pan( -e.delta );
+					//2017.4.9 wuxignogo: unuse this camera to drag graph..
+                   	//Pan( -e.delta );
                 }
                 
 			}

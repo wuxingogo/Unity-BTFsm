@@ -31,6 +31,7 @@ namespace wuxingogo.Node
 			
 		public void MoveNode(Vector2 delta)
 		{
+			Undo.RecordObject(this, "BTFsm_Move_Node");
 			Bounds = new Rect( Bounds.position + delta, Bounds.size );
 		}
 
@@ -105,18 +106,19 @@ namespace wuxingogo.Node
             {
                 Handles.DrawBezier( startPos, endPos, startTan, endTan, shadowCol, null, ( i + 1 ) * 5 );
 
-                //var allPoint = Handles.MakeBezierPoints( startPos, endPos, startTan, endTan, ( i + 1 ) * 5 );
-                //for( int j = 0; j < allPoint.Length; j++ )
-                //{
-                //    Handles.DrawPolyLine( 0, allPoint[j], Quaternion.identity, 10 );
-                //}
-                //Handles.DrawPolyLine( allPoint );
-                //var totalPoint = GetPoints( startPos, endPos, startTan, endTan, ( i + 1 ) * 5 );
-                //for( int j = 0; j < totalPoint.Count; j++ )
-                //{
-                //  Handles.MakeBezierPoints( totalPoint[j], 1 );
-                //}
-
+				/*
+                var allPoint = Handles.MakeBezierPoints( startPos, endPos, startTan, endTan, ( i + 1 ) * 5 );
+                for( int j = 0; j < allPoint.Length; j++ )
+                {
+                    Handles.DrawPolyLine( 0, allPoint[j], Quaternion.identity, 10 );
+                }
+                Handles.DrawPolyLine( allPoint );
+                var totalPoint = GetPoints( startPos, endPos, startTan, endTan, ( i + 1 ) * 5 );
+                for( int j = 0; j < totalPoint.Count; j++ )
+                {
+                  Handles.MakeBezierPoints( totalPoint[j], 1 );
+                }
+				*/
             }
            
             Handles.DrawBezier( startPos, endPos, startTan, endTan, Color.white, null, 3 );

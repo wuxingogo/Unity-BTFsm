@@ -1,5 +1,8 @@
 using UnityEngine;
 using System.Collections;
+using wuxingogo.tools;
+
+
 namespace wuxingogo.btFsm
 {
     [ActionTitle("Variable/GameObject Variable")]
@@ -14,7 +17,7 @@ namespace wuxingogo.btFsm
             {
                 var source = GetSource();
                 var t = source.Value;
-                var n = GameObjectUtil.getRelativePath(source.Owner.gameObject, Value );
+				var n = GameObjectUtilities.GetRelativePath(source.Owner.gameObject, Value );
                 XLogger.Log( n );
                 Value = Owner.transform.Find( n ).gameObject;
             }

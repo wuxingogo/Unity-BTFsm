@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using wuxingogo.btFsm;
+using wuxingogo.tools;
 
 [ActionTitle("GameObject/Active Child GameObject")]
 public class ActiveObjectAction : BTAction
@@ -14,7 +15,7 @@ public class ActiveObjectAction : BTAction
             gameObject.SetActive( active );
         else
         {
-            var targetTransform = GameObjectUtil.FindByName( Fsm.transform, gameObject.name );
+			var targetTransform = GameObjectUtilities.FindByName( Fsm.transform, gameObject.name );
             targetTransform.gameObject.SetActive( active );
         }
     }
