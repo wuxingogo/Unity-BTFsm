@@ -258,7 +258,16 @@ namespace wuxingogo.BTNode
 		public static void AddActionToState( BTState Owner, BTAction action )
         {
 			var Fsm = Owner.Owner;
-			BTEditorWindow.AddObjectToAsset (action, Owner);
+			if (BTEditorWindow.HasPrefab (Fsm)) {
+				if (Fsm.template == null) {
+					Fsm.template = XScriptableObject.CreateInstance<BTTemplate> ();
+					BTEditorWindow.AddObjectToAsset (Fsm.template, Fsm.gameObject);
+					EditorUtility.SetDirty (Fsm);
+					Fsm.template.startEvent = Fsm.startEvent;
+					Fsm.template.totalEvent = Fsm.totalEvent;
+				}
+				BTEditorWindow.AddObjectToAsset (action, Owner);
+			}
 			EditorUtility.SetDirty( Fsm );
 
         }

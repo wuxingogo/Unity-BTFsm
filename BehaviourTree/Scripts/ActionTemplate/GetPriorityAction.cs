@@ -9,8 +9,8 @@ using UnityEngine;
 using System.Collections;
 using wuxingogo.btFsm;
 
-[ActionTitle("TSPlay/GetProi")]
-public class GetProi : BTAction
+[ActionTitle("BTFsm/Priority")]
+public class GetPriorityAction : BTAction
 {
 
 }

@@ -14,7 +14,7 @@ namespace wuxingogo.btFsm
         public BTState currState = null;
 
 		/// <summary>
-		/// The total global event.
+		/// global event.
 		/// </summary>
 		public List<BTEvent> totalEvent = new List<BTEvent>();
         
@@ -113,8 +113,6 @@ namespace wuxingogo.btFsm
 			startEvent.TargetState.GlobalEvent = startEvent;
 			startEvent.TargetState.Name = "GlobalState";
 
-
-
 			var type = wuxingogo.Reflection.XReflectionUtils.TryGetClass ("BTGenericMenu");
 			if (type != null) {
 				var method = type.GetMethod("AddStateToFsm");
@@ -186,7 +184,17 @@ namespace wuxingogo.btFsm
             }
             
 		}
+		[X]
+		public void RollbackLastState()
+		{
+			if( lastState != null ) {
+				XLogger.LogError( "Rollback State : " + currState.Name +","+ lastState.Name );
+				nextState = lastState;
+				lastState = null;
+			}
+		}
         public BTState nextState = null;
+		public BTState lastState = null;
 
         public void Finish()
         {
@@ -236,6 +244,7 @@ namespace wuxingogo.btFsm
             {
                 if( currState != null)
                     currState.OnExit();
+				lastState = currState;
                 currState = nextState;
                 nextState = null;
                 currState.OnEnter();
