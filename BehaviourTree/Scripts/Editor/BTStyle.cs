@@ -20,7 +20,7 @@ public class BTStyle {
 
 	private static GUISkin _skin = null;
 
-	[MenuItem( "Tools/Copy GUISkin" )]
+	//[MenuItem( "Tools/Copy GUISkin" )]
 	public static void CopySkin()
 	{
 		var selectSkin = SelectionUtils.GetObject<GUISkin>();
