@@ -50,7 +50,7 @@ namespace wuxingogo.Node
                 // Subwindow style (active/nonactive)
                 var isActive = selection.Contains( node );
                 //var style = UnityEditor.Graphs.Styles.GetNodeStyle( node.style, node.color, isActive );
-				var style = node2.isCustomState ? XStyles.GetInstance().FindStyle( "RedBox" ) : XStyles.GetInstance().FindStyle( "GreyBox" );
+				var style = node2.isCustomState ? BTStyle.skin.FindStyle( "RedBox" ) : BTStyle.skin.FindStyle( "GreyBox" );
                 // Show the subwindow of this node.
                 node.position = GUILayout.Window(
                     node.GetInstanceID(), node2.position,
@@ -74,7 +74,8 @@ namespace wuxingogo.Node
             edgeGUI.DoDraggedEdge();
 
             // Mouse drag
-            DragSelection( new Rect( -5000, -5000, 10000, 10000 ) );
+            //DragSelection( new Rect( -5000, -5000, 10000, 10000 ) );
+            DragSelection();
 
             // Context menu
             ShowCustomContextMenu();

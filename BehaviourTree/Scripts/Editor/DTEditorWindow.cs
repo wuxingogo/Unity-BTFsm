@@ -121,22 +121,22 @@ namespace wuxingogo.Node
                 stateMachineGraph = ScriptableObject.CreateInstance<Graph>();
                 stateMachineGraph.hideFlags = HideFlags.HideAndDontSave;
             }
-            if( stateMachineGraphGUI == null )
-            {
-                stateMachineGraphGUI = ( GetEditor( stateMachineGraph ) );
-                
-            }
+//            if( stateMachineGraphGUI == null )
+//            {
+//                stateMachineGraphGUI = ( GetEditor( stateMachineGraph ) );
+//                
+//            }
         }
 
         public void DrawGraphGUI()
         {
-            if( stateMachineGraphGUI != null )
-            {
-                stateMachineGraphGUI.BeginGraphGUI( this, new Rect( 0, 0, this.position.width, this.position.height ) );
-                //stateMachineGraphGUI.OnGraphGUI ();
-                stateMachineGraphGUI.EndGraphGUI();
-
-            }
+//            if( stateMachineGraphGUI != null )
+//            {
+//                stateMachineGraphGUI.BeginGraphGUI( this, new Rect( 0, 0, this.position.width, this.position.height ) );
+//                //stateMachineGraphGUI.OnGraphGUI ();
+//                stateMachineGraphGUI.EndGraphGUI();
+//
+//            }
         }
 
 		public void OnDisable()
@@ -226,7 +226,7 @@ namespace wuxingogo.Node
 		{
 			int dragButton = 0;
 			int rightButton = 2;
-			if( e.button == rightButton && e.type == EventType.layout ) {
+			if( e.button == rightButton && e.type == EventType.Layout ) {
 				foreach( var node in DragNodes() ) {
 					node.MoveNode( e.delta );
 				}

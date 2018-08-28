@@ -75,7 +75,7 @@ namespace wuxingogo.Node
 		public void HandleInput(Event e)
 		{
 			int dragButton = 2;
-			if( e.button == dragButton && e.type == EventType.layout ) {
+			if( e.button == dragButton && e.type == EventType.Layout ) {
                 if( !isPress )
                 {
                     isPress = true;

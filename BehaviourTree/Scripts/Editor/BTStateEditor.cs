@@ -89,7 +89,7 @@ namespace wuxingogo.BTNode
             
             targetState.Bounds = CreateRectField( "Bounds", targetState.Bounds );
 
-			targetState.Notes = EditorGUILayout.TextArea( targetState.Notes, XStyles.GetInstance().skin.textArea );
+			targetState.Notes = EditorGUILayout.TextArea( targetState.Notes, BTStyle.skin.textArea );
 
             targetState.Priority = CreateIntField( "Priority", targetState.Priority );
             serializedObject.Update();

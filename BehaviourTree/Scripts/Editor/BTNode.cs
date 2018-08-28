@@ -159,17 +159,17 @@ namespace wuxingogo.BTNode
             
             
             GUI.Box( DrawBounds, "", 
-                isCustomState ? XStyles.GetInstance().FindStyle( "RedBox" ) : XStyles.GetInstance().FindStyle( "GreyBox" ) );
+                isCustomState ? BTStyle.skin.FindStyle( "RedBox" ) : BTStyle.skin.FindStyle( "GreyBox" ) );
             DrawChildNodes();
 
             if( Selected )
             {
                 GUI.Box( DrawBounds, "",
-                    isCustomState ? XStyles.GetInstance().FindStyle( "GreenBox" ) : XStyles.GetInstance().FindStyle( "BlueBox" ) );
+                    isCustomState ? BTStyle.skin.FindStyle( "GreenBox" ) : BTStyle.skin.FindStyle( "BlueBox" ) );
             }
             if( BtState.Owner.currState != null && BtState.Name == BtState.Owner.currState.Name )
             {
-                GUI.Box( DrawBounds, "", XStyles.GetInstance().FindStyle( "OrangleBox" ) );
+                GUI.Box( DrawBounds, "", BTStyle.skin.FindStyle( "OrangleBox" ) );
             }
 
                 for( int i = 0; i < BtState.totalEvent.Count; i++ )
@@ -177,7 +177,7 @@ namespace wuxingogo.BTNode
                     Rect button = GetEventRect( i );
                     var targetEvent = BtState.totalEvent[i];
                     bool isCurrentEvent = targetEvent == BTEditorWindow.instance.currentEvent;
-					if( GUI.Button( button, targetEvent.Name, XStyles.GetInstance().skin.button ) )
+					if( GUI.Button( button, targetEvent.Name, BTStyle.skin.button ) )
                     {
                         BTEditorWindow.instance.SetCurrentEvent( targetEvent );
                     }
@@ -200,8 +200,8 @@ namespace wuxingogo.BTNode
                     }
 
                 }
-                GUI.Box( DrawBounds, ThumbnailTexture, XStyles.GetInstance().FindStyle( "TextureBox" ) );
-				GUI.Label( DrawBounds, Title, XStyles.GetInstance().skin.label );
+                GUI.Box( DrawBounds, ThumbnailTexture, BTStyle.skin.FindStyle( "TextureBox" ) );
+				GUI.Label( DrawBounds, Title, BTStyle.skin.label );
             }
             
         }
