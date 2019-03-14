@@ -12,14 +12,19 @@ public class BTStyle {
 		{
 			if( _skin == null )
 			{
-				_skin = AssetDatabase.LoadAssetAtPath<GUISkin>( "Assets/BehaviourTree/BTGUIStyle.guiskin" );
+				var skinPath = AssetsUtilites.FindAssetsByTags<GUISkin>("BTGUIStyle");
+				_skin = skinPath[0];
 			}
 			return _skin;
 		}
 	}
 
 	private static GUISkin _skin = null;
-
+	[MenuItem( "Tools/BTFsm/Set GUISkin" )]
+	public static void SetBTFsmSkin()
+	{
+		AssetDatabase.SetLabels(Selection.activeObject, new string[]{"BTGUIStyle"});
+	}
 	//[MenuItem( "Tools/Copy GUISkin" )]
 	public static void CopySkin()
 	{
