@@ -132,6 +132,7 @@ namespace wuxingogo.BTNode
 
         #region implemented abstract members of DTEditorWindow
 
+        public List<BTState> copiedStates = null;
         public void OnEnable()
         {
             base.OnEnable();
@@ -185,6 +186,49 @@ namespace wuxingogo.BTNode
                 }
             }
             return null;
+        }
+
+        public override void OnCopy()
+        {
+            base.OnCopy();
+
+            copiedStates.Clear();
+            for (int i = 0; i < totalNode.Count; i++)
+            {
+                if (totalNode[i].Selected)
+                {
+                    copiedStates.Add(totalNode[i].BtState);
+                }
+            }
+        }
+
+        public override void OnPaste()
+        {
+            base.OnPaste();
+            
+            List<BTState> newStates = new List<BTState>();
+            for (int i = 0; i < copiedStates.Count; i++)
+            {
+                var copyState = copiedStates[i];
+                var newState = BTState.Create( target, copyState );
+                newState.name = copyState.name;
+                newState.OnCreate();
+                BTEditorWindow.instance.AddNewBTNode( newState );
+                EditorUtility.SetDirty( target );
+                BTGenericMenu.AddStateToFsm( target, newState );
+                newStates.Add((newState));
+            }
+
+            for (int j = 0; j < newStates.Count; j++)
+            {
+                var newState = newStates[j];
+                newState.ReFindEvent();
+                for( int i = 0; i < newState.totalActions.Count; i++ )
+                {
+                    BTGenericMenu.AddActionToState( newState, newState.totalActions[i] );
+                }
+            }
+            EditorUtility.SetDirty(target);
         }
 
         public BTNode AddNewBTNode( BTState newBTState )

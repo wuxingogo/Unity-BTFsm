@@ -190,7 +190,8 @@ namespace wuxingogo.BTNode
                     if( targetEvent.TargetState != null )
                     {
                         targetStateNode = BTEditorWindow.instance.FindBTNode( targetEvent.TargetState );
-                        DrawBesizeFromRect( button, targetStateNode.DrawBounds );
+                        if(targetStateNode != null)
+                            DrawBesizeFromRect( button, targetStateNode.DrawBounds );
                     }
 
                     if( totalRunningEvent.ContainsKey( targetEvent ) )

@@ -19,6 +19,15 @@ namespace wuxingogo.btFsm
 			}
 		}
 
+		public void ReFindEvent()
+		{
+			for( int j = 0; j < totalEvent.Count; j++ )
+			{
+				if( totalEvent[j].TargetState != null )
+					totalEvent[j].TargetState = Owner.FindState( totalEvent[j].TargetState.Name );
+			}
+		}
+
         public BTState Source = null;
 
         public List<BTEvent> totalEvent = new List<BTEvent>();

@@ -71,6 +71,7 @@ namespace wuxingogo.Node
 			graphCamera.HandleInput( e );
 
 			HandleSelect( e );
+			HandleCopy( e );
 			HandleDrag( e );
 			HandleDragPerform( e );
 
@@ -222,6 +223,29 @@ namespace wuxingogo.Node
 
 		bool draggingNodes = false;
 
+		public virtual void OnCopy()
+		{
+			XLogger.Log("Copy");
+		}
+
+		public virtual void OnPaste()
+		{
+			XLogger.Log("Paste");
+		}
+		void HandleCopy(Event e)
+		{
+			if (e.type == EventType.KeyUp)
+			{
+				if (e.keyCode == KeyCode.C && e.command == true)
+				{
+					OnCopy();
+				}
+				if (e.keyCode == KeyCode.V && e.command == true)
+				{
+					OnPaste();
+				}
+			}
+		}
 		void HandleDrag(Event e)
 		{
 			int dragButton = 0;
