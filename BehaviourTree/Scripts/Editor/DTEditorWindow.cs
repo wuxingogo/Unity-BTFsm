@@ -162,7 +162,7 @@ namespace wuxingogo.Node
             graphGUI.hideFlags = HideFlags.HideAndDontSave;
             return graphGUI;
         }
-        [X]
+       // [X]
         public DragNode HoverNode
         {
             get

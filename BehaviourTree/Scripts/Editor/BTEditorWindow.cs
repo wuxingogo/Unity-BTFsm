@@ -289,31 +289,38 @@ namespace wuxingogo.BTNode
             var allTemplate = AssetsUtilites.FindAssetsByTags<BTTemplate>( "BTFsm" );
             var allAction = AssetsUtilites.FindAssetsByTags<BTAction>( "BTFsm" );
             var allVariable = AssetsUtilites.FindAssetsByTags<BTVariable>( "BTFsm" );
-
+           // var allFsm = AssetsUtilites.FindAssetsByTags<BTFsm>( "BTFsm" );
             for( int i = 0; i < allState.Length; i++ )
             {
                 allState[i].hideFlags = hideFlags;
-                EditorUtility.SetDirty( allState[i] );
-
+                
+                SaveAndReimport( allState[i] );
+                
             }
             for( int i = 0; i < allTemplate.Length; i++ )
             {
                 allTemplate[i].hideFlags = hideFlags;
-                EditorUtility.SetDirty( allTemplate[i] );
+                SaveAndReimport( allTemplate[i] );
             }
             for( int i = 0; i < allAction.Length; i++ )
             {
                 allAction[i].hideFlags = hideFlags;
-                EditorUtility.SetDirty( allAction[i] );
+                SaveAndReimport( allAction[i] );
             }
 
             for( int i = 0; i < allVariable.Length; i++ )
             {
                 allVariable[i].hideFlags = hideFlags;
-                EditorUtility.SetDirty( allVariable[i] );
+                SaveAndReimport( allVariable[i] );
 
             }
             AssetDatabase.Refresh();
+        }
+
+        public static void SaveAndReimport(Object obj)
+        {
+            EditorUtility.SetDirty( obj );
+            AssetDatabase.ImportAsset(AssetDatabase.GetAssetPath(obj));
         }
         public void RemoveState( BTNode currentState )
         {

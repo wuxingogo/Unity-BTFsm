@@ -19,8 +19,8 @@ namespace wuxingogo.BTNode
         public override void OnClickNode( DragNode targetNode )
         {
             currNode = ( BTNode )targetNode;
-            var allActions = XReflectionUtils.FindUnitySubClass( typeof( BTAction ) ).ToList();
-            var allVariables = XReflectionUtils.FindUnitySubClass( typeof( BTVariable ) ).ToList();
+            var allActions = XReflectionUtils.FindSubClass( typeof( BTAction ) ).ToList();
+            var allVariables = XReflectionUtils.FindSubClass( typeof( BTVariable ) ).ToList();
             GenericMenu gm = new GenericMenu();
             gm.AddItem( new GUIContent( "New Fsm Event" ), false, ClickNode, ( object )"NewEvent" );
             gm.AddItem( new GUIContent( "Open State Script" ), false, ClickNode, "OpenScript" );
@@ -185,9 +185,7 @@ namespace wuxingogo.BTNode
             {
                 if( owner.template == null )
                 {
-                    owner.template = XScriptableObject.CreateInstance<BTTemplate>();
-                    BTEditorWindow.AddObjectToAsset( owner.template, owner.gameObject );
-                    EditorUtility.SetDirty( owner );
+                    AddTemplateToFsm(owner);
                     owner.template.startEvent = owner.startEvent;
                     owner.template.totalEvent = owner.totalEvent;
                     if( owner.template.totalState == null )
@@ -232,9 +230,7 @@ namespace wuxingogo.BTNode
             {
                 if( owner.template == null )
                 {
-                    owner.template = XScriptableObject.CreateInstance<BTTemplate>();
-                    BTEditorWindow.AddObjectToAsset( owner.template, owner.gameObject );
-                    EditorUtility.SetDirty( owner );
+                    AddTemplateToFsm(owner);
                     owner.template.startEvent = owner.startEvent;
                     owner.template.totalEvent = owner.totalEvent;
                 }
@@ -259,10 +255,9 @@ namespace wuxingogo.BTNode
         {
 			var Fsm = Owner.Owner;
 			if (BTEditorWindow.HasPrefab (Fsm)) {
-				if (Fsm.template == null) {
-					Fsm.template = XScriptableObject.CreateInstance<BTTemplate> ();
-					BTEditorWindow.AddObjectToAsset (Fsm.template, Fsm.gameObject);
-					EditorUtility.SetDirty (Fsm);
+				if (Fsm.template == null)
+                {
+                    AddTemplateToFsm(Fsm);
 					Fsm.template.startEvent = Fsm.startEvent;
 					Fsm.template.totalEvent = Fsm.totalEvent;
 				}
@@ -270,6 +265,21 @@ namespace wuxingogo.BTNode
 			}
 			EditorUtility.SetDirty( Fsm );
 
+        }
+
+        public static void AddTemplateToFsm(BTFsm fsm)
+        {
+            fsm.template = BTTemplate.Create(fsm);
+            /// Set Labels
+            var labels = AssetDatabase.GetLabels(fsm.gameObject).ToList();
+            if (labels.Contains("BTFsm") == false)
+            {
+                labels.Add("BTFsm");
+                AssetDatabase.SetLabels(fsm.gameObject,labels.ToArray());
+            }
+            
+            BTEditorWindow.AddObjectToAsset( fsm.template, fsm.gameObject );
+            EditorUtility.SetDirty( fsm );
         }
         #endregion
 

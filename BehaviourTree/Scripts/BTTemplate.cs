@@ -22,6 +22,14 @@ namespace wuxingogo.btFsm
 			totalEvent = source.totalEvent;
 			totalState = source.totalState;
 			startEvent = source.startEvent;
+			this.name = source.name;
+		}
+
+		public static BTTemplate Create(BTFsm source)
+		{
+			var template = XScriptableObject.CreateInstance<BTTemplate>();
+			template.name = source.name;
+			return template;
 		}
 
 		public static BTFsm CreateFromOtherTemplate(BTFsm targetFsm, BTTemplate source)
