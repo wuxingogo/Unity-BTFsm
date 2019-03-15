@@ -74,6 +74,7 @@ namespace wuxingogo.Node
 			HandleCopy( e );
 			HandleDrag( e );
 			HandleDragPerform( e );
+			HandleDelete( e );
 
 			var allNodes = DragNodes();
 			for( int i = 0; i < allNodes.Length; i++ ) {
@@ -232,6 +233,11 @@ namespace wuxingogo.Node
 		{
 			XLogger.Log("Paste");
 		}
+
+		public virtual void OnDelete()
+		{
+			XLogger.Log("Delete");
+		}
 		void HandleCopy(Event e)
 		{
 			if (e.type == EventType.KeyUp)
@@ -296,6 +302,15 @@ namespace wuxingogo.Node
 		public void HandleDragPerform(Event e)
 		{
 			DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+		}
+
+		public void HandleDelete(Event e)
+		{
+			if (e.type == EventType.KeyUp && e.keyCode == KeyCode.Delete)
+			{
+				OnDelete();
+			}
+
 		}
 
 		protected Vector2 TransportWorldPos()

@@ -41,12 +41,15 @@ namespace wuxingogo.BTNode
     [CustomEditor( typeof( BTFsm ), true )]
     public class BTFsmEditor : XMonoBehaviourEditor
     {
+        
         public override void OnPreviewGUI( Rect r, GUIStyle background )
         {
+            /*
             if( GUI.Button( r, "Preview" ) )
             {
 
             }
+            */ 
        
         }
         public override void OnXGUI()

@@ -6,6 +6,7 @@ using wuxingogo.Editor;
 using System.Collections.Generic;
 using wuxingogo.Runtime;
 using wuxingogo.btFsm;
+using wuxingogo.tools;
 namespace wuxingogo.BTNode
 {
 
@@ -132,7 +133,7 @@ namespace wuxingogo.BTNode
 
         #region implemented abstract members of DTEditorWindow
 
-        public List<BTState> copiedStates = null;
+        public List<BTState> copiedStates = new List<BTState>();
         public void OnEnable()
         {
             base.OnEnable();
@@ -193,13 +194,40 @@ namespace wuxingogo.BTNode
             base.OnCopy();
 
             copiedStates.Clear();
+            int count = 0;
             for (int i = 0; i < totalNode.Count; i++)
             {
                 if (totalNode[i].Selected)
                 {
+                    count++;
                     copiedStates.Add(totalNode[i].BtState);
                 }
             }
+
+            ShowNotification(new GUIContent("Copied {0} State.".Format(count)));
+        }
+
+        public override void OnDelete()
+        {
+            int count = 0;
+            List<BTNode> selectNodes = new List<BTNode>();
+            
+            for (int i = 0; i < totalNode.Count; i++)
+            {
+                if (totalNode[i].Selected)
+                {
+                   selectNodes.Add(totalNode[i] );
+                   count++;
+                   
+                }
+            }
+
+            for (int i = 0; i < selectNodes.Count; i++)
+            {
+                RemoveState( selectNodes[i] );
+            }
+            
+            ShowNotification(new GUIContent("Deleted {0} State.".Format(count)));
         }
 
         public override void OnPaste()
@@ -217,6 +245,7 @@ namespace wuxingogo.BTNode
                 EditorUtility.SetDirty( target );
                 BTGenericMenu.AddStateToFsm( target, newState );
                 newStates.Add((newState));
+                
             }
 
             for (int j = 0; j < newStates.Count; j++)
@@ -226,9 +255,11 @@ namespace wuxingogo.BTNode
                 for( int i = 0; i < newState.totalActions.Count; i++ )
                 {
                     BTGenericMenu.AddActionToState( newState, newState.totalActions[i] );
-                }
+                } 
             }
             EditorUtility.SetDirty(target);
+            
+            ShowNotification(new GUIContent("Pasted {0} State.".Format(newStates.Count)));
         }
 
         public BTNode AddNewBTNode( BTState newBTState )

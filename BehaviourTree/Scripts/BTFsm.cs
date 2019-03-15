@@ -1,6 +1,9 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using wuxingogo.Reflection;
 using wuxingogo.Runtime;
+using wuxingogo.tools;
 
 
 namespace wuxingogo.btFsm
@@ -346,11 +349,7 @@ namespace wuxingogo.btFsm
             return null;
         }
 
-		
-        void OnDrawGizmos()
-        {
-            Gizmos.DrawIcon( this.transform.position, "XLogo.jpg" );
-        }
+        
     }
 
 }
